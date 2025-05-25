@@ -295,7 +295,7 @@ export async function createCreateTweetRequestV2(
   }
   const { poll, quoted_tweet_id } = options || {};
   let tweetConfig;
-  
+
   if (poll) {
     tweetConfig = {
       text,
@@ -322,7 +322,7 @@ export async function createCreateTweetRequestV2(
       text,
     };
   }
-  
+
   const tweetResponse = await v2client.v2.tweet(tweetConfig);
   let optionsConfig = {};
   if (options?.poll) {
@@ -392,8 +392,8 @@ export function parseTweetV2ToV1(
       end_datetime: poll.end_datetime
         ? poll.end_datetime
         : defaultTweetData?.poll?.end_datetime
-        ? defaultTweetData?.poll?.end_datetime
-        : undefined,
+          ? defaultTweetData?.poll?.end_datetime
+          : undefined,
       options: poll.options.map((option) => ({
         position: option.position,
         label: option.label,
@@ -466,7 +466,7 @@ export async function createCreateTweetRequest(
   mediaData?: { data: Buffer; mediaType: string }[],
   hideLinkPreview = false,
 ) {
-  const onboardingTaskUrl = 'https://api.twitter.com/1.1/onboarding/task.json';
+  const onboardingTaskUrl = 'https://api.x.com/1.1/onboarding/task.json';
 
   const cookies = await auth.cookieJar().getCookies(onboardingTaskUrl);
   const xCsrfToken = cookies.find((cookie) => cookie.key === 'ct0');
@@ -584,7 +584,7 @@ export async function createCreateNoteTweetRequest(
   tweetId?: string,
   mediaData?: { data: Buffer; mediaType: string }[],
 ) {
-  const onboardingTaskUrl = 'https://api.twitter.com/1.1/onboarding/task.json';
+  const onboardingTaskUrl = 'https://api.x.com/1.1/onboarding/task.json';
 
   const cookies = await auth.cookieJar().getCookies(onboardingTaskUrl);
   const xCsrfToken = cookies.find((cookie) => cookie.key === 'ct0');
@@ -1038,7 +1038,7 @@ async function uploadMedia(
   auth: TwitterAuth,
   mediaType: string,
 ): Promise<string> {
-  const uploadUrl = 'https://upload.twitter.com/1.1/media/upload.json';
+  const uploadUrl = 'https://upload.x.com/1.1/media/upload.json';
 
   // Get authentication headers
   const cookies = await auth.cookieJar().getCookies(uploadUrl);
@@ -1194,7 +1194,7 @@ export async function createQuoteTweetRequest(
   auth: TwitterAuth,
   mediaData?: { data: Buffer; mediaType: string }[],
 ) {
-  const onboardingTaskUrl = 'https://api.twitter.com/1.1/onboarding/task.json';
+  const onboardingTaskUrl = 'https://api.x.com/1.1/onboarding/task.json';
 
   // Retrieve necessary cookies and tokens
   const cookies = await auth.cookieJar().getCookies(onboardingTaskUrl);
@@ -1216,7 +1216,7 @@ export async function createQuoteTweetRequest(
   const variables: Record<string, any> = {
     tweet_text: text,
     dark_request: false,
-    attachment_url: `https://twitter.com/twitter/status/${quotedTweetId}`,
+    attachment_url: `https://x.com/twitter/status/${quotedTweetId}`,
     media: {
       media_entities: [],
       possibly_sensitive: false,
@@ -1314,7 +1314,7 @@ export async function likeTweet(
 ): Promise<void> {
   // Prepare the GraphQL endpoint and payload
   const likeTweetUrl =
-    'https://twitter.com/i/api/graphql/lI07N6Otwv1PhnEgXILM7A/FavoriteTweet';
+    'https://x.com/i/api/graphql/lI07N6Otwv1PhnEgXILM7A/FavoriteTweet';
 
   // Retrieve necessary cookies and tokens
   const cookies = await auth.cookieJar().getCookies(likeTweetUrl);
@@ -1364,7 +1364,7 @@ export async function retweet(
 ): Promise<void> {
   // Prepare the GraphQL endpoint and payload
   const retweetUrl =
-    'https://twitter.com/i/api/graphql/ojPdsZsimiJrUGLR1sjUtA/CreateRetweet';
+    'https://x.com/i/api/graphql/ojPdsZsimiJrUGLR1sjUtA/CreateRetweet';
 
   // Retrieve necessary cookies and tokens
   const cookies = await auth.cookieJar().getCookies(retweetUrl);
@@ -1412,7 +1412,7 @@ export async function createCreateLongTweetRequest(
   // URL for the long tweet endpoint
   const url =
     'https://x.com/i/api/graphql/YNXM2DGuE2Sff6a2JD3Ztw/CreateNoteTweet';
-  const onboardingTaskUrl = 'https://api.twitter.com/1.1/onboarding/task.json';
+  const onboardingTaskUrl = 'https://api.x.com/1.1/onboarding/task.json';
 
   const cookies = await auth.cookieJar().getCookies(onboardingTaskUrl);
   const xCsrfToken = cookies.find((cookie) => cookie.key === 'ct0');
@@ -1507,30 +1507,30 @@ export async function createCreateLongTweetRequest(
   return response;
 }
 
-export async function getArticle(
-  id: string,
-  auth: TwitterAuth,
-): Promise<TimelineArticle | null> {
-  const tweetDetailRequest =
-    apiRequestFactory.createTweetDetailArticleRequest();
-  tweetDetailRequest.variables.focalTweetId = id;
+// export async function getArticle(
+//   id: string,
+//   auth: TwitterAuth,
+// ): Promise<TimelineArticle | null> {
+//   const tweetDetailRequest =
+//     apiRequestFactory.createTweetDetailArticleRequest();
+//   tweetDetailRequest.variables.focalTweetId = id;
 
-  const res = await requestApi<ThreadedConversation>(
-    tweetDetailRequest.toRequestUrl(),
-    auth,
-  );
+//   const res = await requestApi<ThreadedConversation>(
+//     tweetDetailRequest.toRequestUrl(),
+//     auth,
+//   );
 
-  if (!res.success) {
-    throw res.err;
-  }
+//   if (!res.success) {
+//     throw res.err;
+//   }
 
-  if (!res.value) {
-    return null;
-  }
+//   if (!res.value) {
+//     return null;
+//   }
 
-  const articles = parseArticle(res.value);
-  return articles.find((article) => article.id === id) ?? null;
-}
+//   const articles = parseArticle(res.value);
+//   return articles.find((article) => article.id === id) ?? null;
+// }
 
 /**
  * Fetches a single page of retweeters for a given tweet, collecting both bottom and top cursors.
@@ -1538,17 +1538,17 @@ export async function getArticle(
  * All comments must remain in English.
  */
 export async function fetchRetweetersPage(
-    tweetId: string,
-    auth: TwitterAuth,
-    cursor?: string,
-    count = 40,
+  tweetId: string,
+  auth: TwitterAuth,
+  cursor?: string,
+  count = 40,
 ): Promise<{
   retweeters: Retweeter[];
   bottomCursor?: string;
   topCursor?: string;
 }> {
   const baseUrl =
-      'https://twitter.com/i/api/graphql/VSnHXwLGADxxtetlPnO7xg/Retweeters';
+    'https://twitter.com/i/api/graphql/VSnHXwLGADxxtetlPnO7xg/Retweeters';
 
   // Build query parameters
   const variables = {
@@ -1623,7 +1623,7 @@ export async function fetchRetweetersPage(
 
   const json = await response.json();
   const instructions =
-      json?.data?.retweeters_timeline?.timeline?.instructions || [];
+    json?.data?.retweeters_timeline?.timeline?.instructions || [];
 
   const retweeters: Retweeter[] = [];
   let bottomCursor: string | undefined;
@@ -1648,16 +1648,16 @@ export async function fetchRetweetersPage(
 
         // Capture the bottom cursor
         if (
-            entry.content?.entryType === 'TimelineTimelineCursor' &&
-            entry.content?.cursorType === 'Bottom'
+          entry.content?.entryType === 'TimelineTimelineCursor' &&
+          entry.content?.cursorType === 'Bottom'
         ) {
           bottomCursor = entry.content.value;
         }
 
         // Capture the top cursor
         if (
-            entry.content?.entryType === 'TimelineTimelineCursor' &&
-            entry.content?.cursorType === 'Top'
+          entry.content?.entryType === 'TimelineTimelineCursor' &&
+          entry.content?.cursorType === 'Top'
         ) {
           topCursor = entry.content.value;
         }
@@ -1675,8 +1675,8 @@ export async function fetchRetweetersPage(
  * @returns A list of all users that retweeted the tweet.
  */
 export async function getAllRetweeters(
-    tweetId: string,
-    auth: TwitterAuth
+  tweetId: string,
+  auth: TwitterAuth
 ): Promise<Retweeter[]> {
   let allRetweeters: Retweeter[] = [];
   let cursor: string | undefined;
@@ -1684,10 +1684,10 @@ export async function getAllRetweeters(
   while (true) {
     // Destructure bottomCursor / topCursor
     const { retweeters, bottomCursor, topCursor } = await fetchRetweetersPage(
-        tweetId,
-        auth,
-        cursor,
-        40
+      tweetId,
+      auth,
+      cursor,
+      40
     );
     allRetweeters = allRetweeters.concat(retweeters);
 

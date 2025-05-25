@@ -3,7 +3,7 @@ import { requestApi } from './api';
 import { CookieJar } from 'tough-cookie';
 import { updateCookieJar } from './requests';
 import { Headers } from 'headers-polyfill';
-import { TwitterApiErrorRaw } from './errors';
+import { TwitterApiErrorRaw, ApiError } from './errors';
 import { Type, type Static } from '@sinclair/typebox';
 import { Check } from '@sinclair/typebox/value';
 import * as OTPAuth from 'otpauth';
@@ -62,7 +62,7 @@ export class TwitterUserAuth extends TwitterGuestAuth {
 
   async isLoggedIn(): Promise<boolean> {
     const res = await requestApi<TwitterUserAuthVerifyCredentials>(
-      'https://api.twitter.com/1.1/account/verify_credentials.json',
+      'https://api.x.com/1.1/account/verify_credentials.json',
       this,
     );
     if (!res.success) {
@@ -144,7 +144,7 @@ export class TwitterUserAuth extends TwitterGuestAuth {
     }
 
     await requestApi<void>(
-      'https://api.twitter.com/1.1/account/logout.json',
+      'https://api.x.com/1.1/account/logout.json',
       this,
       'POST',
     );
@@ -341,7 +341,7 @@ export class TwitterUserAuth extends TwitterGuestAuth {
     data: TwitterUserAuthFlowRequest,
   ): Promise<FlowTokenResult> {
     const onboardingTaskUrl =
-      'https://api.twitter.com/1.1/onboarding/task.json';
+      'https://api.x.com/1.1/onboarding/task.json';
 
     const token = this.guestToken;
     if (token == null) {
@@ -371,7 +371,7 @@ export class TwitterUserAuth extends TwitterGuestAuth {
     await updateCookieJar(this.jar, res.headers);
 
     if (!res.ok) {
-      return { status: 'error', err: new Error(await res.text()) };
+      return { status: 'error', err: await ApiError.fromResponse(res) };
     }
 
     const flow: TwitterUserAuthFlowResponse = await res.json();

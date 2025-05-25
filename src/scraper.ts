@@ -55,7 +55,7 @@ import {
   retweet,
   createCreateNoteTweetRequest,
   createCreateLongTweetRequest,
-  getArticle,
+  // getArticle,
   getAllRetweeters,
   Retweeter,
 } from './tweets';
@@ -1031,9 +1031,9 @@ export class Scraper {
    * @param id The ID of the article to fetch. In the format of (http://x.com/i/article/id)
    * @returns The {@link TimelineArticle} object, or `null` if it couldn't be fetched.
    */
-  public getArticle(id: string): Promise<TimelineArticle | null> {
-    return getArticle(id, this.auth);
-  }
+  // public getArticle(id: string): Promise<TimelineArticle | null> {
+  //   return getArticle(id, this.auth);
+  // }
 
   /**
    * Creates a new conversation with Grok.

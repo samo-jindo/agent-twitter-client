@@ -19,7 +19,7 @@ import { Photo, Tweet } from './tweets';
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
-import dotenv from 'dotenv';  
+import dotenv from 'dotenv';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -71,11 +71,9 @@ async function loadCookies() {
 
     // Map cookies to the correct format (strings)
     const cookieStrings = cookiesArray.map((cookie: any) => {
-      return `${cookie.key}=${cookie.value}; Domain=${cookie.domain}; Path=${cookie.path}; ${
-        cookie.secure ? 'Secure' : ''
-      }; ${cookie.httpOnly ? 'HttpOnly' : ''}; SameSite=${
-        cookie.sameSite || 'Lax'
-      }`;
+      return `${cookie.key}=${cookie.value}; Domain=${cookie.domain}; Path=${cookie.path}; ${cookie.secure ? 'Secure' : ''
+        }; ${cookie.httpOnly ? 'HttpOnly' : ''}; SameSite=${cookie.sameSite || 'Lax'
+        }`;
     });
 
     // Set the cookies for the current session
@@ -431,7 +429,7 @@ async function executeCommand(commandLine: string) {
       const mediaFiles = args.slice(2);
 
       // Prepare the quote tweet text including the quoted tweet URL
-      const quoteTweetText = `${text} https://twitter.com/user/status/${quotedTweetId}`;
+      const quoteTweetText = `${text} https://x.com/user/status/${quotedTweetId}`;
 
       // Send the quote tweet using the sendTweetCommand function
       await sendTweetCommand(quoteTweetText, mediaFiles);

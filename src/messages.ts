@@ -240,9 +240,8 @@ export async function getDirectMessageConversations(
     params.append('cursor', cursor);
   }
 
-  const finalUrl = `${messageListUrl}${
-    params.toString() ? '?' + params.toString() : ''
-  }`;
+  const finalUrl = `${messageListUrl}${params.toString() ? '?' + params.toString() : ''
+    }`;
   const cookies = await auth.cookieJar().getCookies(url);
   const xCsrfToken = cookies.find((cookie) => cookie.key === 'ct0');
 

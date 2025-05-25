@@ -1,3 +1,4 @@
+import { jitter } from './api';
 import { Profile } from './profile';
 import { Tweet } from './tweets';
 
@@ -32,6 +33,7 @@ export async function* getUserTimeline(
   let cursor: string | undefined = undefined;
   let consecutiveEmptyBatches = 0;
   while (nProfiles < maxProfiles) {
+    await jitter(1000);
     const batch: FetchProfilesResponse = await fetchFunc(
       query,
       maxProfiles,
@@ -86,5 +88,6 @@ export async function* getTweetTimeline(
 
       nTweets++;
     }
+    await jitter(1000);
   }
 }
