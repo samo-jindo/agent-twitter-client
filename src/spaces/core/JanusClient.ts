@@ -1,8 +1,8 @@
 // src/core/JanusClient.ts
 
 import { EventEmitter } from 'events';
-import wrtc from '@roamhq/wrtc';
-const { RTCPeerConnection, MediaStream } = wrtc;
+// import wrtc from '@roamhq/wrtc';
+// const { RTCPeerConnection, MediaStream } = wrtc;
 import { JanusAudioSink, JanusAudioSource } from './JanusAudio';
 import type { AudioDataWithUser, TurnServersInfo } from '../types';
 import { Logger } from '../logger';
@@ -643,9 +643,8 @@ export class JanusClient extends EventEmitter {
         return;
       }
       try {
-        const url = `${this.config.webrtcUrl}/${
-          this.sessionId
-        }?maxev=1&_=${Date.now()}`;
+        const url = `${this.config.webrtcUrl}/${this.sessionId
+          }?maxev=1&_=${Date.now()}`;
         const resp = await fetch(url, {
           headers: { Authorization: this.config.credential },
         });

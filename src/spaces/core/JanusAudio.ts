@@ -1,9 +1,9 @@
 // src/core/JanusAudio.ts
 
 import { EventEmitter } from 'events';
-import wrtc from '@roamhq/wrtc';
-const { nonstandard } = wrtc;
-const { RTCAudioSource, RTCAudioSink } = nonstandard;
+// import wrtc from '@roamhq/wrtc';
+// const { nonstandard } = wrtc;
+// const { RTCAudioSource, RTCAudioSink } = nonstandard;
 import { Logger } from '../logger';
 
 /**
@@ -32,21 +32,22 @@ interface AudioSinkOptions {
  */
 export class JanusAudioSource extends EventEmitter {
   private source: any;
-  private readonly track: MediaStreamTrack;
+  // private readonly track: MediaStreamTrack;
   private logger?: Logger;
 
   constructor(options?: AudioSourceOptions) {
     super();
     this.logger = options?.logger;
-    this.source = new RTCAudioSource();
-    this.track = this.source.createTrack();
+    // this.source = new RTCAudioSource();
+    // this.track = this.source.createTrack();
   }
 
   /**
    * Returns the MediaStreamTrack associated with this audio source.
    */
   public getTrack(): MediaStreamTrack {
-    return this.track;
+    // return this.track;
+    return null as any;
   }
 
   /**
@@ -95,7 +96,7 @@ export class JanusAudioSink extends EventEmitter {
     }
 
     // Create RTCAudioSink to listen for PCM frames
-    this.sink = new RTCAudioSink(track);
+    // this.sink = new RTCAudioSink(track);
 
     // Register callback for PCM frames
     this.sink.ondata = (frame: {
@@ -109,10 +110,10 @@ export class JanusAudioSink extends EventEmitter {
       if (this.logger?.isDebugEnabled()) {
         this.logger?.debug(
           `[JanusAudioSink] ondata => ` +
-            `sampleRate=${frame.sampleRate}, ` +
-            `bitsPerSample=${frame.bitsPerSample}, ` +
-            `channelCount=${frame.channelCount}, ` +
-            `frames=${frame.samples.length}`,
+          `sampleRate=${frame.sampleRate}, ` +
+          `bitsPerSample=${frame.bitsPerSample}, ` +
+          `channelCount=${frame.channelCount}, ` +
+          `frames=${frame.samples.length}`,
         );
       }
 
