@@ -212,12 +212,35 @@ export class TwitterGuestAuth implements TwitterAuth {
   }
 
   protected async getCookies(): Promise<Cookie[]> {
-    const cookies = await Promise.all([
-      this.jar.getCookies(this.getCookieJarUrl()),
-      this.jar.getCookies('https://twitter.com'),
-      this.jar.getCookies('https://x.com'),
-    ]);
-    return cookies.flat();
+    // 모든 가능한 Twitter/X 관련 도메인을 확인
+    const domains = [
+      this.getCookieJarUrl(),
+      'https://twitter.com',
+      'https://x.com',
+      'https://api.x.com',
+      'https://api.twitter.com',
+    ];
+
+    const cookiePromises = domains.map(async (domain) => {
+      try {
+        const cookies = await this.jar.getCookies(domain);
+        console.debug(`[TwitterGuestAuth] Cookies from ${domain}:`, cookies.length);
+        return cookies;
+      } catch (error) {
+        console.debug(`[TwitterGuestAuth] Failed to get cookies from ${domain}:`, error);
+        return [];
+      }
+    });
+
+    const cookieArrays = await Promise.all(cookiePromises);
+    const allCookies = cookieArrays.flat();
+
+    console.debug(`[TwitterGuestAuth] Total cookies found:`, allCookies.length);
+    if (allCookies.length > 0) {
+      console.debug(`[TwitterGuestAuth] Cookie names:`, allCookies.map(c => c.key));
+    }
+
+    return allCookies;
   }
 
   protected async getCookieString(): Promise<string> {
