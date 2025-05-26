@@ -212,42 +212,12 @@ export class TwitterGuestAuth implements TwitterAuth {
   }
 
   protected async getCookies(): Promise<Cookie[]> {
-    const domains = [
-      'https://x.com',
-      'https://twitter.com',
-      this.getCookieJarUrl(),
-    ];
-
-    const cookieMap = new Map<string, Cookie>();
-
-    for (const domain of domains) {
-      try {
-        const cookies = await this.jar.getCookies(domain);
-        console.debug(`[TwitterGuestAuth] Cookies from ${domain}:`, cookies.length);
-
-        for (const cookie of cookies) {
-          if (!cookieMap.has(cookie.key)) {
-            cookieMap.set(cookie.key, cookie);
-          }
-        }
-      } catch (error) {
-        console.debug(`[TwitterGuestAuth] Failed to get cookies from ${domain}:`, error);
-      }
-    }
-
-    const uniqueCookies = Array.from(cookieMap.values());
-
-    console.debug(`[TwitterGuestAuth] Total unique cookies found:`, uniqueCookies.length);
-    if (uniqueCookies.length > 0) {
-      console.debug(`[TwitterGuestAuth] Unique cookie names:`, uniqueCookies.map(c => c.key));
-
-      const ct0 = uniqueCookies.find(c => c.key === 'ct0');
-      if (ct0) {
-        console.debug(`[TwitterGuestAuth] CSRF token (ct0) found:`, ct0.value.substring(0, 8) + '...');
-      }
-    }
-
-    return uniqueCookies;
+    const cookies = await Promise.all([
+      this.jar.getCookies(this.getCookieJarUrl()),
+      this.jar.getCookies('https://twitter.com'),
+      this.jar.getCookies('https://x.com'),
+    ]);
+    return cookies.flat();
   }
 
   protected async getCookieString(): Promise<string> {

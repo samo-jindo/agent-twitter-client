@@ -102,7 +102,7 @@ import {
   GrokChatResponse,
 } from './grok';
 
-const twUrl = 'https://twitter.com';
+const twUrl = 'https://x.com';
 const UserTweetsUrl =
   'https://twitter.com/i/api/graphql/E3opETHurmVJflFsUBVuUQ/UserTweets';
 
@@ -783,11 +783,15 @@ export class Scraper {
    * @returns All cookies for the current session.
    */
   public async getCookies(): Promise<Cookie[]> {
-    return await this.authTrends
-      .cookieJar()
-      .getCookies(
-        typeof document !== 'undefined' ? document.location.toString() : twUrl,
-      );
+    const jar = this.authTrends.cookieJar();
+    const cookieJarUrl = typeof document !== 'undefined' ? document.location.toString() : twUrl;
+
+    const cookies = await Promise.all([
+      jar.getCookies(cookieJarUrl),
+      jar.getCookies('https://twitter.com'),
+      jar.getCookies('https://x.com'),
+    ]);
+    return cookies.flat();
   }
 
   /**
