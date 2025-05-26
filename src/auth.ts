@@ -212,35 +212,42 @@ export class TwitterGuestAuth implements TwitterAuth {
   }
 
   protected async getCookies(): Promise<Cookie[]> {
-    // 모든 가능한 Twitter/X 관련 도메인을 확인
     const domains = [
-      this.getCookieJarUrl(),
-      'https://twitter.com',
       'https://x.com',
-      'https://api.x.com',
-      'https://api.twitter.com',
+      'https://twitter.com',
+      this.getCookieJarUrl(),
     ];
 
-    const cookiePromises = domains.map(async (domain) => {
+    const cookieMap = new Map<string, Cookie>();
+
+    for (const domain of domains) {
       try {
         const cookies = await this.jar.getCookies(domain);
         console.debug(`[TwitterGuestAuth] Cookies from ${domain}:`, cookies.length);
-        return cookies;
+
+        for (const cookie of cookies) {
+          if (!cookieMap.has(cookie.key)) {
+            cookieMap.set(cookie.key, cookie);
+          }
+        }
       } catch (error) {
         console.debug(`[TwitterGuestAuth] Failed to get cookies from ${domain}:`, error);
-        return [];
       }
-    });
-
-    const cookieArrays = await Promise.all(cookiePromises);
-    const allCookies = cookieArrays.flat();
-
-    console.debug(`[TwitterGuestAuth] Total cookies found:`, allCookies.length);
-    if (allCookies.length > 0) {
-      console.debug(`[TwitterGuestAuth] Cookie names:`, allCookies.map(c => c.key));
     }
 
-    return allCookies;
+    const uniqueCookies = Array.from(cookieMap.values());
+
+    console.debug(`[TwitterGuestAuth] Total unique cookies found:`, uniqueCookies.length);
+    if (uniqueCookies.length > 0) {
+      console.debug(`[TwitterGuestAuth] Unique cookie names:`, uniqueCookies.map(c => c.key));
+
+      const ct0 = uniqueCookies.find(c => c.key === 'ct0');
+      if (ct0) {
+        console.debug(`[TwitterGuestAuth] CSRF token (ct0) found:`, ct0.value.substring(0, 8) + '...');
+      }
+    }
+
+    return uniqueCookies;
   }
 
   protected async getCookieString(): Promise<string> {
