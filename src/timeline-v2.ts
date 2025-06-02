@@ -341,7 +341,6 @@ export function parseTimelineEntryItemContentRaw(
   isConversation = false,
 ) {
   let result = content.tweet_results?.result ?? content.tweetResult?.result;
-  console.log('result?.__typename', result?.__typename);
   if (
     result?.__typename === 'Tweet' ||
     (result?.__typename === 'TweetWithVisibilityResults' && result?.tweet)
