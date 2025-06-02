@@ -18,6 +18,7 @@ export interface TimelineUserResultRaw {
 
 export interface TimelineEntryItemContentRaw {
   itemType?: string;
+  __typename?: string;
   tweetDisplayType?: string;
   tweetResult?: {
     result?: TimelineResultRaw;
@@ -34,6 +35,8 @@ export interface TimelineEntryItemContentRaw {
 export interface TimelineEntryRaw {
   entryId: string;
   content?: {
+    entryType?: string;
+    __typename?: string;
     cursorType?: string;
     value?: string;
     items?: {
@@ -85,7 +88,8 @@ export interface TimelineV2 {
   data?: {
     user?: {
       result?: {
-        timeline_v2?: {
+        __typename?: string;
+        timeline?: {
           timeline?: {
             instructions?: TimelineInstruction[];
           };
@@ -274,6 +278,15 @@ function parseResult(result?: TimelineResultRaw): ParseTweetResult {
 
 const expectedEntryTypes = ['tweet', 'profile-conversation'];
 
+function getTimelineInstructionEntries(
+  instruction: TimelineInstruction,
+): TimelineEntryRaw[] {
+  const entries = instruction.entries ?? [];
+  if (instruction.entry) {
+    entries.push(instruction.entry);
+  }
+  return entries;
+}
 export function parseTimelineTweetsV2(
   timeline: TimelineV2,
 ): QueryTweetsResponse {
@@ -281,9 +294,9 @@ export function parseTimelineTweetsV2(
   let topCursor: string | undefined;
   const tweets: Tweet[] = [];
   const instructions =
-    timeline.data?.user?.result?.timeline_v2?.timeline?.instructions ?? [];
+    timeline.data?.user?.result?.timeline?.timeline?.instructions ?? [];
   for (const instruction of instructions) {
-    const entries = instruction.entries ?? [];
+    const entries = getTimelineInstructionEntries(instruction);
 
     for (const entry of entries) {
       const entryContent = entry.content;
@@ -328,6 +341,7 @@ export function parseTimelineEntryItemContentRaw(
   isConversation = false,
 ) {
   let result = content.tweet_results?.result ?? content.tweetResult?.result;
+  console.log('result?.__typename', result?.__typename);
   if (
     result?.__typename === 'Tweet' ||
     (result?.__typename === 'TweetWithVisibilityResults' && result?.tweet)
@@ -382,7 +396,7 @@ export function parseThreadedConversation(
     [];
 
   for (const instruction of instructions) {
-    const entries = instruction.entries ?? [];
+    const entries = getTimelineInstructionEntries(instruction);
     for (const entry of entries) {
       const entryContent = entry.content?.itemContent;
       if (entryContent) {
