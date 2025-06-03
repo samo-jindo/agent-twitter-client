@@ -230,7 +230,7 @@ export async function fetchQuotedTweetsPage(
   params.set('fieldToggles', stringify(fieldToggles) ?? '');
   params.set('variables', stringify(variables) ?? '');
 
-  const url = `https://x.com/i/api/graphql/1BP5aKg8NvTNvRCyyCyq8g/SearchTimeline?${params.toString()}`;
+  const url = `https://x.com/i/api/graphql/5JZjQpDoL-EfrnGHS2WEHA/SearchTimeline?${params.toString()}`;
 
   // Perform the request
   const res = await requestApi(url, auth);

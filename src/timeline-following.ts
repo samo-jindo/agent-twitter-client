@@ -55,7 +55,7 @@ export async function fetchFollowingTimeline(
   };
 
   const res = await requestApi<HomeLatestTimelineResponse>(
-    `https://x.com/i/api/graphql/K0X1xbCZUjttdK8RazKAlw/HomeLatestTimeline?variables=${encodeURIComponent(
+    `https://x.com/i/api/graphql/k8Hn3sXa-etUISeib_AwsA/HomeLatestTimeline?variables=${encodeURIComponent(
       JSON.stringify(variables),
     )}&features=${encodeURIComponent(JSON.stringify(features))}`,
     auth,

@@ -1411,7 +1411,7 @@ export async function createCreateLongTweetRequest(
 ) {
   // URL for the long tweet endpoint
   const url =
-    'https://x.com/i/api/graphql/YNXM2DGuE2Sff6a2JD3Ztw/CreateNoteTweet';
+    'https://x.com/i/api/graphql/xH-3FJ7YGPRWLkmqHPS-XA/CreateNoteTweet';
   const onboardingTaskUrl = 'https://api.x.com/1.1/onboarding/task.json';
 
   const cookies = await auth.cookieJar().getCookies(onboardingTaskUrl);

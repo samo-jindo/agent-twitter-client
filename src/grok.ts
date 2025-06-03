@@ -78,7 +78,7 @@ export async function createGrokConversation(
   auth: TwitterAuth,
 ): Promise<string> {
   const res = await requestApi<GrokConversation>(
-    'https://x.com/i/api/graphql/6cmfJY3d7EPWuCSXWrkOFg/CreateGrokConversation',
+    'https://x.com/i/api/graphql/vvC5uy7pWWHXS2aDi1FZeA/CreateGrokConversation',
     auth,
     'POST',
   );

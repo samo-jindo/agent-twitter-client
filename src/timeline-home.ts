@@ -55,7 +55,7 @@ export async function fetchHomeTimeline(
   };
 
   const res = await requestApi<HomeTimelineResponse>(
-    `https://x.com/i/api/graphql/HJFjzBgCs16TqxewQOeLNg/HomeTimeline?variables=${encodeURIComponent(
+    `https://x.com/i/api/graphql/dPN0pctEz9ipW8dGOvXWDA/HomeTimeline?variables=${encodeURIComponent(
       JSON.stringify(variables),
     )}&features=${encodeURIComponent(JSON.stringify(features))}`,
     auth,
@@ -69,7 +69,7 @@ export async function fetchHomeTimeline(
     throw res.err;
   }
 
-  const home = res.value?.data?.home.home_timeline_urt?.instructions;
+  const home = res.value?.data?.home?.home_timeline_urt?.instructions;
 
   if (!home) {
     return [];
