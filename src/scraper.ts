@@ -379,12 +379,21 @@ export class Scraper {
       creator_subscriptions_quote_tweet_preview_enabled: false,
       freedom_of_speech_not_reach_fetch_enabled: true,
       standardized_nudges_misinfo: true,
-      tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled:
-        true,
+      tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled: true,
       rweb_video_timestamps_enabled: true,
       longform_notetweets_rich_text_read_enabled: true,
       longform_notetweets_inline_media_enabled: true,
       responsive_web_enhance_cards_enabled: false,
+      rweb_video_screen_enabled: false,
+      profile_label_improvements_pcf_label_in_post_enabled: true,
+      premium_content_api_read_enabled: false,
+      responsive_web_grok_analyze_button_fetch_trends_enabled: false,
+      responsive_web_grok_analyze_post_followups_enabled: false,
+      responsive_web_jetfuel_frame: false,
+      responsive_web_grok_share_attachment_enabled: true,
+      responsive_web_grok_show_grok_translated_post: false,
+      responsive_web_grok_analysis_button_from_backend: false,
+      responsive_web_grok_image_annotation_enabled: true,
     };
 
     const fieldToggles = {

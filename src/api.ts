@@ -199,8 +199,26 @@ export function addApiFeatures(o: object) {
     android_graphql_skip_api_media_color_palette: false,
     creator_subscriptions_subscription_count_enabled: false,
     blue_business_profile_image_shape_enabled: false,
-    unified_cards_ad_metadata_container_dynamic_card_content_query_enabled:
-      false,
+    unified_cards_ad_metadata_container_dynamic_card_content_query_enabled: false,
+    rweb_video_screen_enabled: false,
+    profile_label_improvements_pcf_label_in_post_enabled: true,
+    premium_content_api_read_enabled: false,
+    responsive_web_grok_analyze_button_fetch_trends_enabled: false,
+    responsive_web_grok_analyze_post_followups_enabled: false,
+    responsive_web_jetfuel_frame: false,
+    responsive_web_grok_share_attachment_enabled: true,
+    responsive_web_grok_show_grok_translated_post: false,
+    responsive_web_grok_analysis_button_from_backend: false,
+    responsive_web_grok_image_annotation_enabled: true,
+    rweb_tipjar_consumption_enabled: true,
+    communities_web_enable_tweet_community_results_fetch: true,
+    c9s_tweet_anatomy_moderator_badge_enabled: true,
+    articles_preview_enabled: true,
+    responsive_web_twitter_article_tweet_consumption_enabled: true,
+    creator_subscriptions_quote_tweet_preview_enabled: false,
+    tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled: true,
+    rweb_video_timestamps_enabled: true,
+    longform_notetweets_inline_media_enabled: true,
   };
 }
 
